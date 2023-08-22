@@ -6,6 +6,7 @@ import { useTasksStore } from '@/hooks/useTasksStore';
 import { FormGroup } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FaUndo } from 'react-icons/fa'
+import { MdDeleteOutline } from 'react-icons/md'
 import toast from 'react-hot-toast';
 
 const Home = () => {
@@ -13,12 +14,21 @@ const Home = () => {
   const [checkedTasks, setCheckedTasks] = useState<TaskInterface[]>()
   const [nonCheckedTasks, setNonCheckedTasks] = useState<TaskInterface[]>([])
   const tasks = useTasksStore((state) => state.tasks)
-  const { toggleTask } = useTasksStore()
+  const { toggleTask, removeTask } = useTasksStore()
 
   const undoTask = async (id: string) => {
     try {
       toggleTask(id)
       toast.success("A tarefa foi adicionada à lista de afazares mais uma vez!")
+    } catch (error) {
+      console.log(error)
+      toast.error('Alguma coisa deu errado.')
+    }
+  }
+  const deleteTask = async (id: string) => {
+    try {
+      removeTask(id)
+      toast.success("A tarefa foi removida com sucesso!")
     } catch (error) {
       console.log(error)
       toast.error('Alguma coisa deu errado.')
@@ -35,7 +45,7 @@ const Home = () => {
   }, [tasks])
   
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col justify-center'>
       <div className='flex flex-col gap-4'>
         <span className='text-3xl font-bold lg:text-5xl'>22 de agosto, 2023</span>
         <p>{nonCheckedTasks.length} incompletas, {checkedTasks?.length} completas</p>
@@ -53,7 +63,10 @@ const Home = () => {
         {checkedTasks?.map((task) => (
           <div key={task.id} className='flex flex-row items-center'>
             <Task label={task.task} checked={task.checked} id={task.id}/>
-            <FaUndo onClick={() => {undoTask(task.id)}} className='cursor-pointer'/>
+            <div className='flex gap-2 items-center'>
+              <FaUndo onClick={() => {undoTask(task.id)}} className='cursor-pointer text-lg'/>
+              <MdDeleteOutline className='text-2xl text-red-600' onClick={() => {deleteTask(task.id)}}/>
+            </div>
           </div>
         ))}
       </FormGroup>
