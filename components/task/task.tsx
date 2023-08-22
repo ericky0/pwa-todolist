@@ -1,8 +1,10 @@
+"use client";
+
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
 import Label from './label';
 import { useTasksStore } from '@/hooks/useTasksStore';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface TaskProps {
   id: string;
@@ -17,23 +19,23 @@ const Task = ({checked, label, category, id}: TaskProps) => {
   const {toggleTask} = useTasksStore()
 
   const onClick = () => {
-    
     try {
       toggleTask(id)
       setDisable(true)
-      toast.success('Tarefa completada!')
     } catch (error) {
-      console.log(error)
+      toast.error('Alguma coisa deu errado.')
     }
+    toast.success("Tarefa Completada!")
   }
 
   return (
+    <div className='flex flex-row'>
         <FormControlLabel 
-          control={<Checkbox checked={checked}/>} 
-          label={<Label label={label} category={checked || disable ? '' : category} />} 
-          onClick={checked || disable ? () => {} : onClick} 
+          control={<Checkbox checked={checked} onClick={checked || disable ? () => {} : onClick} />} 
+          label={<Label label={label} category={checked || disable ? '' : category} />}
           disabled={checked || disable}
-        /> 
+        />
+    </div>
   )
 }
 
