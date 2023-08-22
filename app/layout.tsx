@@ -1,5 +1,3 @@
-"use client";
-
 import ModalProvider from '@/providers/modal-provider'
 import './globals.css'
 import type { Metadata } from 'next'
@@ -17,20 +15,11 @@ export const metadata: Metadata = {
   themeColor: '#fff'
 }
 
-
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/service-worker.js')
-        .then((registration) => console.log('scope is: ', registration.scope));
-    }
-  }, []);
   return (
     <html lang="en">
       
