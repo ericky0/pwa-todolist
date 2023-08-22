@@ -25,6 +25,7 @@ const AddTask = () => {
       right-[40px] 
       bg-[#515CC6]
       rounded-full
+      cursor-pointer
     "
     target="_blank"
     onClick={onChange}
