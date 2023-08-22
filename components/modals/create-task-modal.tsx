@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useCreateTaskModal } from '@/hooks/useTaskModal'
-import { Backdrop, Box, Button, Fade, FormControl, InputLabel, MenuItem, Modal, TextField, Typography } from '@mui/material'
+import { Backdrop, Box, Button, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Modal, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useTasksStore } from '@/hooks/useTasksStore';
@@ -36,13 +36,15 @@ const CreateTaskModal = () => {
   const createTaskModal = useCreateTaskModal()
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { register, handleSubmit, reset } = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       task: '',
       category: '',
     }
   })
+
+  const { register } = form
 
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string)
@@ -57,7 +59,7 @@ const CreateTaskModal = () => {
     } catch (error) {
       toast.error("Alguma coisa deu errado.")
     } finally {
-      reset()
+      form.reset()
       setLoading(false)
     }
   }
@@ -77,7 +79,8 @@ const CreateTaskModal = () => {
     <Fade in={createTaskModal.isOpen}>
       <Box 
       component='form'
-      onSubmit={handleSubmit(onSubmit)}
+      {...form}
+      onSubmit={form.handleSubmit(onSubmit)}
       className='
         absolute
         top-[50%] 
