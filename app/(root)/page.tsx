@@ -58,7 +58,7 @@ const Home = () => {
         ))}
       </FormGroup>
       
-      <FormGroup className='mt-10'>
+      <FormGroup className='mt-10 pb-10'>
         <span className='font-bold'>Completas</span>
         {checkedTasks?.map((task) => (
           <div key={task.id} className='flex flex-row items-center'>

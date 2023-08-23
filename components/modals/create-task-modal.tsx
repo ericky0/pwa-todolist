@@ -4,8 +4,8 @@ import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useCreateTaskModal } from '@/hooks/useTaskModal'
 import { Backdrop, Box, Button, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Modal, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useRef, useState } from 'react'
+import Select from '@mui/material/Select';
 import { useTasksStore } from '@/hooks/useTasksStore';
 import { useForm } from 'react-hook-form';
 import { v4 } from 'uuid'
@@ -31,7 +31,6 @@ const categories = [
 
 const CreateTaskModal = () => {
   
-  const [ category, setCategory ] = useState('')
   const { addTask } = useTasksStore()
   const createTaskModal = useCreateTaskModal()
   const [loading, setLoading] = useState<boolean>(false)
@@ -41,14 +40,11 @@ const CreateTaskModal = () => {
     defaultValues: {
       task: '',
       category: '',
-    }
+    },
   })
 
   const { register } = form
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value as string)
-  }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -111,10 +107,8 @@ const CreateTaskModal = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={category}
                 label="Categoria"
                 {...register('category')}
-                onChange={handleChange}
                 disabled={loading}
                 className='bg-white'
               >
