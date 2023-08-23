@@ -5,6 +5,7 @@ const withPWAInit = require("next-pwa");
 const withPWA = withPWAInit({
   dest: "public",
   // Solution: https://github.com/shadowwalker/next-pwa/issues/424#issuecomment-1399683017
+  disable: process.env.NODE_ENV === "development",
   buildExcludes: ["app-build-manifest.json"],
 });
 

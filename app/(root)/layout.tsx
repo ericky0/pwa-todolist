@@ -7,8 +7,8 @@ interface RootLayoutProps {
 
 const RootLayoutProps = ({children}: RootLayoutProps) => {
   return (
-    <div className="flex justify-center items-center h-full w-full p-6 mt-10 mb-20">
-      <AddTask />
+    <div className="flex justify-center h-full w-full p-6">
+      <AddTask /> 
       {children}
     </div>
   )
